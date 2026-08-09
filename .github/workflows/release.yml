@@ -12,6 +12,37 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        pack:
+          - name: British Road Sign Fonts
+            file: British Road Sign Fonts.zip
+            suffix: All
+
+          - name: Motorway Permanent Font
+            file: Motorway Permanent Font.zip
+            suffix: Motorway_Permanent
+
+          - name: Motorway Temporary Font
+            file: Motorway Temporary Font.zip
+            suffix: Motorway_Temporary
+
+          - name: Pavement Font
+            file: Pavement Font.zip
+            suffix: Pavement
+
+          - name: Transport Heavy Font
+            file: Transport Heavy Font.zip
+            suffix: Transport_Heavy
+
+          - name: Transport Medium Font
+            file: Transport Medium Font.zip
+            suffix: Transport_Medium
+
+          - name: VMS Font
+            file: VMS Font.zip
+            suffix: VMS
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,17 +76,20 @@ jobs:
             echo "type=release" >> $GITHUB_OUTPUT
           fi
 
-      - name: Upload Modrinth
+      - name: Upload ${{ matrix.pack.name }}
         uses: Kir-Antipov/mc-publish@v3
         with:
           modrinth-id: V86rbgab
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           files: |
-            dist/*.zip
+            dist/${{ matrix.pack.file }}
 
-          name: British Road Sign Fonts ${{ github.ref_name }}
-          version: ${{ github.ref_name }}
+          name: ${{ matrix.pack.name }} ${{ github.ref_name }}
+
+          version: ${{ github.ref_name }}_${{ matrix.pack.suffix }}
+
+          version-type: ${{ steps.version.outputs.type }}
 
           loaders: |
             minecraft
