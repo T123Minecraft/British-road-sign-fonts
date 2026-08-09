@@ -31,6 +31,20 @@ jobs:
           files: |
             dist/*.zip
 
+      - name: Detect version type
+        id: version
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+
+          if [[ "$VERSION" == *"-alpha"* ]]; then
+            echo "type=alpha" >> $GITHUB_OUTPUT
+          elif [[ "$VERSION" == *"-beta"* ]]; then
+            echo "type=beta" >> $GITHUB_OUTPUT
+          else
+            echo "type=release" >> $GITHUB_OUTPUT
+          fi
+
       - name: Upload Modrinth
         uses: Kir-Antipov/mc-publish@v3
         with:
