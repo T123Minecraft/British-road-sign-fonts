@@ -1,6 +1,6 @@
 {
 	"pack": {
-		"description": "英国道路标识字体的资源包，适用于迷上城建模组\nA resource pack of British road sign fonts for the Mishang Urban Construction mod.",
+		"description": "英国道路标识字体的资源包\nA resource pack of British road sign fonts",
 		"pack_format": 34,
 		"supported_formats": [6, 84],
 		"min_format": 6,

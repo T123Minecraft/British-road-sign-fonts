@@ -44,6 +44,12 @@ def build_merged():
     if README_FILE.exists():
         shutil.copy(README_FILE, out_dir / "README.md")
     
+    # 复制许可证文件
+    if Path("LICENSE").exists():
+        shutil.copy("LICENSE", out_dir / "LICENSE")
+    if Path("LICENSE-FONTS").exists():
+        shutil.copy("LICENSE-FONTS", out_dir / "LICENSE-FONTS")
+    
     zip_path = DIST_DIR / "British Road Sign Fonts"
     shutil.make_archive(str(zip_path), 'zip', out_dir)
     
@@ -79,7 +85,7 @@ def build_individual():
             print(f"⚠️ 警告: {font_dir}/font 不存在，跳过")
             continue
         
-        # 生成 pack.mcmeta —— 与合并包格式一致
+        # 生成 pack.mcmeta
         meta = json.loads(json.dumps(template))
         meta["pack"]["description"] = meta["pack"]["description"].replace(
             "{FONT_DISPLAY_NAME}", display_name
@@ -106,7 +112,12 @@ def build_individual():
         if README_FILE.exists():
             shutil.copy(README_FILE, out_dir / "README.md")
         
-        # 打包到 dist/ 根目录
+        # 复制许可证文件
+        if Path("LICENSE").exists():
+            shutil.copy("LICENSE", out_dir / "LICENSE")
+        if Path("LICENSE-FONTS").exists():
+            shutil.copy("LICENSE-FONTS", out_dir / "LICENSE-FONTS")
+        
         zip_name = f"{display_name} Font"
         shutil.make_archive(
             str(DIST_DIR / zip_name),

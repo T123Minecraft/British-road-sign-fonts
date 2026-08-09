@@ -1,12 +1,25 @@
-<h1>British Road Sign Fonts</h1>
+# British Road Sign Fonts
 
-<p>This is a resource pack of British road sign fonts by T123Minecraft for the Mishang Urban Construction mod, excluding Transport Medium (Greek), Old Road Sign Font, and AES Ministry.</p>
+This is a resource pack of British road sign fonts by T123Minecraft for the Mishang Urban Construction mod, excluding Transport Medium (Greek), Old Road Sign Font, and AES Ministry.
 
-<p>These fonts are free and were downloaded from:<br>
-https://www.roads.org.uk/fonts/</p>
+These fonts are free and were downloaded from:  
+https://www.roads.org.uk/fonts/
 
-<p>These fonts are subject to Crown Copyright,<br>
-and these fonts contain public sector information licensed under the <em><strong>Open Government Licence v1.0</strong></em>.</p>
+These fonts are subject to Crown Copyright, and these fonts contain public sector information licensed under the **Open Government Licence v1.0**.
 
-<p>The terms of the Open Government Licence v1.0 can be read at this address:<br>
-https://www.nationalarchives.gov.uk/doc/open-government-licence/version/1/open-government-licence.html</p>
+The terms of the Open Government Licence v1.0 can be read at this address:  
+https://www.nationalarchives.gov.uk/doc/open-government-licence/version/1/open-government-licence.html
+
+---
+
+## License
+
+This project contains two parts with different licenses:
+
+- **Font files** (`.ttf` files under `assets/`):  
+  Crown Copyright, licensed under the **Open Government Licence v1.0**.  
+  See `LICENSE-FONTS` for the full text.
+
+- **All other code, metadata, and documentation**:  
+  Licensed under the **MIT License**.  
+  See `LICENSE` for details.
