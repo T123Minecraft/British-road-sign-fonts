@@ -18,7 +18,7 @@ This project contains two parts with different licenses:
 
 - **Font files** (`.ttf` files under `assets/`):  
   Crown Copyright, licensed under the **Open Government Licence v1.0**.  
-  See `LICENSE-FONTS` for the full text.
+  See `LICENSE-FONT` for the full text.
 
 - **All other code, metadata, and documentation**:  
   Licensed under the **MIT License**.  

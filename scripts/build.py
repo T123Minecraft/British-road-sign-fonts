@@ -47,8 +47,8 @@ def build_merged():
     # 复制许可证文件
     if Path("LICENSE").exists():
         shutil.copy("LICENSE", out_dir / "LICENSE")
-    if Path("LICENSE-FONTS").exists():
-        shutil.copy("LICENSE-FONTS", out_dir / "LICENSE-FONTS")
+    if Path("LICENSE-FONT").exists():
+        shutil.copy("LICENSE-FONT", out_dir / "LICENSE-FONT")
     
     zip_path = DIST_DIR / "British Road Sign Fonts"
     shutil.make_archive(str(zip_path), 'zip', out_dir)
@@ -115,8 +115,8 @@ def build_individual():
         # 复制许可证文件
         if Path("LICENSE").exists():
             shutil.copy("LICENSE", out_dir / "LICENSE")
-        if Path("LICENSE-FONTS").exists():
-            shutil.copy("LICENSE-FONTS", out_dir / "LICENSE-FONTS")
+        if Path("LICENSE-FONT").exists():
+            shutil.copy("LICENSE-FONT", out_dir / "LICENSE-FONT")
         
         zip_name = f"{display_name} Font"
         shutil.make_archive(
