@@ -34,7 +34,7 @@ jobs:
       - name: Upload Modrinth
         uses: Kir-Antipov/mc-publish@v3
         with:
-          modrinth-id: 你的项目ID
+          modrinth-id: V86rbgab
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           files: |
