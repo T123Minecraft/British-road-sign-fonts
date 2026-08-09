@@ -8,8 +8,40 @@ on:
 permissions:
   contents: write
 
+
 jobs:
+
   build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+
+      - name: Build resource packs
+        run: |
+          python scripts/build.py
+
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.zip
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
+
+
+
+  publish-modrinth:
+    needs: build
     runs-on: ubuntu-latest
 
     strategy:
@@ -43,24 +75,23 @@ jobs:
             file: VMS Font.zip
             suffix: VMS
 
+
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
+
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
+
       - name: Build resource packs
         run: |
           python scripts/build.py
 
-      - name: Upload GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            dist/*.zip
 
       - name: Detect version type
         id: version
@@ -76,9 +107,11 @@ jobs:
             echo "type=release" >> $GITHUB_OUTPUT
           fi
 
+
       - name: Upload ${{ matrix.pack.name }}
         uses: Kir-Antipov/mc-publish@v3
         with:
+
           modrinth-id: V86rbgab
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
@@ -90,6 +123,9 @@ jobs:
           version: ${{ github.ref_name }}_${{ matrix.pack.suffix }}
 
           version-type: ${{ steps.version.outputs.type }}
+
+          dependencies: |
+            required:rItLmRo4
 
           loaders: |
             minecraft
@@ -126,4 +162,3 @@ jobs:
             26.1
             26.1.1
             26.1.2
-      
