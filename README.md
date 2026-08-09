@@ -1,11 +1,11 @@
 # British Road Sign Fonts
 
-This is a resource pack of British road sign fonts by T123Minecraft for the Mishang Urban Construction mod, excluding Transport Medium (Greek), Old Road Sign Font, and AES Ministry.
+This is a resource pack of British road sign fonts created by T123Minecraft for the Mishang Urban Construction mod, excluding three fonts: Transport Medium (Greek), Old Road Sign Font, and AES Ministry.
 
 These fonts are free and were downloaded from:  
 https://www.roads.org.uk/fonts/
 
-These fonts are subject to Crown Copyright, and contain public sector information licensed under the **Open Government Licence v1.0**.
+These fonts are subject to Crown Copyright and contain public sector information licensed under the **Open Government Licence v1.0**.
 
 The full terms of the Open Government Licence v1.0 can be read at:  
 https://www.nationalarchives.gov.uk/doc/open-government-licence/version/1/open-government-licence.html
