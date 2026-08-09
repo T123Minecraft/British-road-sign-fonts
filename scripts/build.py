@@ -10,6 +10,7 @@ TEMPLATE_INDIVIDUAL = Path("src/pack.mcmeta.individual.template")
 README_FILE = Path("README.md")
 DIST_DIR = Path("dist")
 NAMESPACE = "brsf"
+ICON_FILE = Path("src/pack.png")
 
 # ===== 工具函数：将文件夹名转为显示名称 =====
 def folder_to_display_name(folder_name: str) -> str:
@@ -51,6 +52,8 @@ def build_merged():
             )
     
     shutil.copy(TEMPLATE_MERGED, out_dir / "pack.mcmeta")
+    if ICON_FILE.exists():
+        shutil.copy(ICON_FILE, out_dir / "pack.png")
     
     if README_FILE.exists():
         shutil.copy(README_FILE, out_dir / "README.md")
@@ -91,7 +94,8 @@ def build_individual():
         
         src_font = font_dir / "font"
         if src_font.exists() and src_font.is_dir():
-            shutil.copytree(src_font, assets_out / "font")
+            # ✅ 添加 dirs_exist_ok=True，避免目录已存在时报错
+            shutil.copytree(src_font, assets_out / "font", dirs_exist_ok=True)
         else:
             print(f"⚠️ 警告: {font_dir}/font 不存在，跳过")
             continue
@@ -119,6 +123,9 @@ def build_individual():
 '''
         with open(out_dir / "pack.mcmeta", 'w', encoding='utf-8') as f:
             f.write(content)
+
+        if ICON_FILE.exists():
+            shutil.copy(ICON_FILE, out_dir / "pack.png")
         
         if README_FILE.exists():
             shutil.copy(README_FILE, out_dir / "README.md")
@@ -142,6 +149,7 @@ def build_individual():
 
 # ===== 主入口 =====
 if __name__ == "__main__":
+    shutil.rmtree(DIST_DIR, ignore_errors=True)  # 完全清空 dist/
     DIST_DIR.mkdir(exist_ok=True)
     build_merged()
     build_individual()
