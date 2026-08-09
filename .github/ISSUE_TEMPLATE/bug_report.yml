@@ -1,5 +1,5 @@
 name: Bug Report
-description: "向我报告模组的bug | Report the mod's bugs to me"
+description: "向我报告资源包的bug | Report the resource pack's bugs to me"
 title: "[Bug] "
 labels: ["bug"]
 assignees: T123Minecraft
@@ -15,29 +15,11 @@ body:
       required: true
 
   - type: input
-    id: loader
-    attributes:
-      label: "模组加载器 | Mod Loader"
-      description: "告诉我你用的模组加载器 | Tell me which mod loader you are using"
-      placeholder: "例如 | e.g. : Fabric"
-    validations:
-      required: true
-
-  - type: input
     id: mod_version
     attributes:
-      label: "模组版本 | Mod Version"
-      description: "告诉我你用的模组的版本 | Tell me the version of the mod you are using"
+      label: "资源包版本 | Resource pack Version"
+      description: "告诉我你用的资源包的版本 | Tell me the version of the resource pack you are using"
       placeholder: "例如 | e.g. : 0.1.0-alpha.1"
-    validations:
-      required: true
-
-  - type: input
-    id: system
-    attributes:
-      label: "系统 | System"
-      description: "告诉我你用的系统 | Tell me which system you are using"
-      placeholder: "例如 | e.g. : Windows 11"
     validations:
       required: true
 
@@ -57,8 +39,7 @@ body:
     id: modlist
     attributes:
       label: "模组列表 | Mod List"
-      description: |
-        告诉我你用的模组 | Tell me which mods you are using
+      description: "告诉我你用的模组 | Tell me which mods you are using"
     validations:
       required: false
 
