@@ -1,0 +1,9 @@
+{
+    "pack": {
+    "description": "英国道路标识字体的资源包，适用于迷上城建模组\nResource pack of British road signs fonts",
+    "pack_format": 34,
+    "supported_formats": [6, 84],
+		"min_format": 6,
+    "max_format": 84
+    }
+}
