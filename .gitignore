@@ -1,1 +1,48 @@
+# ===== 构建输出目录（最重要） =====
+# 所有打包生成的 .zip 文件和临时文件夹都不提交
+/dist/
 
+# ===== Python 运行时缓存 =====
+# Python 解释器生成的字节码缓存
+__pycache__/
+*.py[cod]
+*.so
+.Python
+
+# ===== 虚拟环境（如果你用的话） =====
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ===== IDE 和编辑器配置（根据你的习惯） =====
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# IntelliJ / PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text / Vim / Emacs 等
+*.swp
+*.swo
+*~
+
+# ===== 操作系统生成的文件 =====
+# Windows
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+.directory
+*.tmp
+*.log
