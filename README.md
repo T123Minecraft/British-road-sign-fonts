@@ -23,3 +23,4 @@ This project contains two parts with different licenses:
 - **All other code, metadata, and documentation**:  
   Licensed under the **MIT License**.  
   See `LICENSE` for details.
+  
