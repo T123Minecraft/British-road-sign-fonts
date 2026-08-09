@@ -1,0 +1,40 @@
+name: Feature Request
+description: "向我提出模组的新功能建议 | Suggest new features for the mod"
+title: "[Feature] "
+labels: ["enhancement"]
+assignees: T123Minecraft
+
+body:
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: "你的想法 | Your Idea"
+      description: "描述你想要的新功能 | Describe the feature you want"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: "为什么需要这个功能 | Why is this needed"
+      description: "告诉我为什么需要这个功能 | Tell me why this feature is needed"
+    validations:
+      required: true
+
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: "参考截图 | Reference Screenshot"
+      description: "上传参考图片或示例 | Upload reference images or examples"
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: "额外信息 | Extra Information"
+      description: "一些可选的补充内容 | Optional additional information"
+    validations:
+      required: false

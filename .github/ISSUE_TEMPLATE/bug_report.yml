@@ -1,0 +1,88 @@
+name: Bug Report
+description: "向我报告模组的bug | Report the mod's bugs to me"
+title: "[Bug] "
+labels: ["bug"]
+assignees: T123Minecraft
+
+body:
+
+  - type: input
+    id: mc_version
+    attributes:
+      label: "Minecraft版本 | Minecraft Version"
+      placeholder: "例如 | e.g. : 1.21.11"
+    validations:
+      required: true
+
+  - type: input
+    id: loader
+    attributes:
+      label: "模组加载器 | Mod Loader"
+      description: "告诉我你用的模组加载器 | Tell me which mod loader you are using"
+      placeholder: "例如 | e.g. : Fabric"
+    validations:
+      required: true
+
+  - type: input
+    id: mod_version
+    attributes:
+      label: "模组版本 | Mod Version"
+      description: "告诉我你用的模组的版本 | Tell me the version of the mod you are using"
+      placeholder: "例如 | e.g. : 0.1.0-alpha.1"
+    validations:
+      required: true
+
+  - type: input
+    id: system
+    attributes:
+      label: "系统 | System"
+      description: "告诉我你用的系统 | Tell me which system you are using"
+      placeholder: "例如 | e.g. : Windows 11"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "复现步骤 | Steps to reproduce"
+      placeholder: |
+        1. 
+        2. 
+        3. 
+        4. 
+    validations:
+      required: true
+
+  - type: textarea
+    id: modlist
+    attributes:
+      label: "模组列表 | Mod List"
+      description: |
+        告诉我你用的模组 | Tell me which mods you are using
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: "游戏截图 | Screenshot"
+      description: "给出bug发生时的游戏截图 | Give the screenshot when the bug happens"
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs_crash
+    attributes:
+      label: "日志/崩溃报告 | Logs/Crash Reports"
+      description: "将bug发生时的日志/崩溃报告粘贴至此 | Paste the logs/crash reports from when the bug happened here"
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: "额外信息 | Extra Information"
+      description: "一些可选的补充内容 | Optional additional information"
+    validations:
+      required: false
