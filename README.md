@@ -1,5 +1,5 @@
-<h1> British road signs font </h1>
-
+<h1> British Road Sign Fonts </h1>
+<p> This is a resource pack of British road sign fonts by 123, excluding Transport Medium (Greek), Old Road Sign Font, and AES Ministry. </p>
 
 <p> These fonts are free and was downloaded from: <br>
 https://www.roads.org.uk/fonts/ </p>
