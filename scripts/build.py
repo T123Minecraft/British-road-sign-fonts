@@ -9,14 +9,16 @@ TEMPLATE_MERGED = Path("src/pack.mcmeta.merged.template")
 TEMPLATE_INDIVIDUAL = Path("src/pack.mcmeta.individual.template")
 README_FILE = Path("README.md")
 DIST_DIR = Path("dist")
+NAMESPACE = "brsf"
 
 # ===== 工具函数：将文件夹名转为显示名称 =====
 def folder_to_display_name(folder_name: str) -> str:
     SPECIAL_MAP = {
         "vms": "VMS",
-        "aes_ministry": "AES Ministry",
-        "old_road_sign": "Old Road Sign",
         "motorway_permanent": "Motorway Permanent",
+        "motorway_temporary": "Motorway Temporary",
+        "pavement": "Pavement",
+        "transport_heavy": "Transport Heavy",
         "transport_medium": "Transport Medium",
     }
     if folder_name in SPECIAL_MAP:
@@ -30,14 +32,23 @@ def folder_to_display_name(folder_name: str) -> str:
 def build_merged():
     print("🔨 正在构建合并包...")
     out_dir = DIST_DIR / "merged"
-    assets_out = out_dir / "assets"
+    assets_out = out_dir / "assets" / NAMESPACE / "font"
     
     shutil.rmtree(out_dir, ignore_errors=True)
     os.makedirs(assets_out, exist_ok=True)
     
     for font_dir in SRC_ASSETS.iterdir():
-        if font_dir.is_dir():
-            shutil.copytree(font_dir, assets_out / font_dir.name)
+        if not font_dir.is_dir():
+            continue
+
+        src_font = font_dir / "font"
+
+        if src_font.exists():
+            shutil.copytree(
+                src_font,
+                assets_out,
+                dirs_exist_ok=True
+            )
     
     shutil.copy(TEMPLATE_MERGED, out_dir / "pack.mcmeta")
     
@@ -75,7 +86,7 @@ def build_individual():
         display_name = folder_to_display_name(font_name)
         
         out_dir = individuals_dir / font_name
-        assets_out = out_dir / "assets" / font_name
+        assets_out = out_dir / "assets" / NAMESPACE
         os.makedirs(assets_out, exist_ok=True)
         
         src_font = font_dir / "font"
