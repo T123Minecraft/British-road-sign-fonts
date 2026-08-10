@@ -99,7 +99,7 @@ jobs:
 
           if [[ "$VERSION" == *"-alpha"* ]]; then
             echo "type=alpha" >> "$GITHUB_OUTPUT"
-          elif [[ "$VERSION" == *"-beta"* ]]; then
+          elif [[ "$VERSION" == *"-beta"* || "$VERSION" == *"-pre"* ]]; then
             echo "type=beta" >> "$GITHUB_OUTPUT"
           else
             echo "type=release" >> "$GITHUB_OUTPUT"
