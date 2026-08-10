@@ -121,7 +121,7 @@ jobs:
           version-type: ${{ steps.version.outputs.type }}
 
           dependencies: |
-            required:rItLmRo4
+            rItLmRo4 | depends | *
 
           loaders: |
             minecraft
