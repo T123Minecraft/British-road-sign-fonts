@@ -1,156 +1,160 @@
-import os
-import shutil
-import json
-from pathlib import Path
+name: Build and Release
 
-# ===== 配置 =====
-SRC_ASSETS = Path("src/assets")
-TEMPLATE_MERGED = Path("src/pack.mcmeta.merged.template")
-TEMPLATE_INDIVIDUAL = Path("src/pack.mcmeta.individual.template")
-README_FILE = Path("README.md")
-DIST_DIR = Path("dist")
-NAMESPACE = "brsf"
-ICON_FILE = Path("src/pack.png")
+on:
+  push:
+    tags:
+      - "[0-9]*"
 
-# ===== 工具函数：将文件夹名转为显示名称 =====
-def folder_to_display_name(folder_name: str) -> str:
-    SPECIAL_MAP = {
-        "vms": "VMS",
-        "motorway_permanent": "Motorway Permanent",
-        "motorway_temporary": "Motorway Temporary",
-        "pavement": "Pavement",
-        "transport_heavy": "Transport Heavy",
-        "transport_medium": "Transport Medium",
-    }
-    if folder_name in SPECIAL_MAP:
-        return SPECIAL_MAP[folder_name]
-    if folder_name.isupper():
-        return folder_name
-    name = folder_name.replace('_', ' ')
-    return name.title()
+permissions:
+  contents: write
 
-# ===== 构建合并包 =====
-def build_merged():
-    print("🔨 正在构建合并包...")
-    out_dir = DIST_DIR / "merged"
-    assets_out = out_dir / "assets" / NAMESPACE / "font"
-    
-    shutil.rmtree(out_dir, ignore_errors=True)
-    os.makedirs(assets_out, exist_ok=True)
-    
-    for font_dir in SRC_ASSETS.iterdir():
-        if not font_dir.is_dir():
-            continue
+jobs:
 
-        src_font = font_dir / "font"
+  # ============================================================
+  # 构建资源包 + 创建 GitHub Release
+  # 这个 Job 不能使用 matrix，只运行一次
+  # ============================================================
+  build:
+    runs-on: ubuntu-latest
 
-        if src_font.exists():
-            shutil.copytree(
-                src_font,
-                assets_out,
-                dirs_exist_ok=True
-            )
-    
-    shutil.copy(TEMPLATE_MERGED, out_dir / "pack.mcmeta")
-    if ICON_FILE.exists():
-        shutil.copy(ICON_FILE, out_dir / "pack.png")
-    
-    if README_FILE.exists():
-        shutil.copy(README_FILE, out_dir / "README.md")
-    
-    # 复制许可证文件
-    if Path("LICENSE").exists():
-        shutil.copy("LICENSE", out_dir / "LICENSE")
-    if Path("LICENSE-FONT").exists():
-        shutil.copy("LICENSE-FONT", out_dir / "LICENSE-FONT")
-    
-    zip_path = DIST_DIR / "British Road Sign Fonts"
-    shutil.make_archive(str(zip_path), 'zip', out_dir)
-    
-    shutil.rmtree(out_dir, ignore_errors=True)
-    print("✅ 合并包已生成: dist/British Road Sign Fonts.zip")
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-# ===== 构建独立包 =====
-def build_individual():
-    print("🔨 正在构建独立包...")
-    
-    with open(TEMPLATE_INDIVIDUAL, 'r', encoding='utf-8') as f:
-        template = json.load(f)
-    
-    individuals_dir = DIST_DIR / "individuals"
-    shutil.rmtree(individuals_dir, ignore_errors=True)
-    os.makedirs(individuals_dir, exist_ok=True)
-    
-    for font_dir in SRC_ASSETS.iterdir():
-        if not font_dir.is_dir():
-            continue
-        
-        font_name = font_dir.name
-        display_name = folder_to_display_name(font_name)
-        
-        out_dir = individuals_dir / font_name
-        assets_out = out_dir / "assets" / NAMESPACE
-        os.makedirs(assets_out, exist_ok=True)
-        
-        src_font = font_dir / "font"
-        if src_font.exists() and src_font.is_dir():
-            # ✅ 添加 dirs_exist_ok=True，避免目录已存在时报错
-            shutil.copytree(src_font, assets_out / "font", dirs_exist_ok=True)
-        else:
-            print(f"⚠️ 警告: {font_dir}/font 不存在，跳过")
-            continue
-        
-        # 生成 pack.mcmeta
-        meta = json.loads(json.dumps(template))
-        meta["pack"]["description"] = meta["pack"]["description"].replace(
-            "{FONT_DISPLAY_NAME}", display_name
-        )
-        
-        desc_escaped = json.dumps(meta["pack"]["description"], ensure_ascii=False)
-        pack_format = meta["pack"]["pack_format"]
-        min_f = meta["pack"]["min_format"]
-        max_f = meta["pack"]["max_format"]
-        
-        content = f'''{{
-    "pack": {{
-        "description": {desc_escaped},
-        "pack_format": {pack_format},
-        "supported_formats": [{min_f}, {max_f}],
-        "min_format": {min_f},
-        "max_format": {max_f}
-    }}
-}}
-'''
-        with open(out_dir / "pack.mcmeta", 'w', encoding='utf-8') as f:
-            f.write(content)
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
-        if ICON_FILE.exists():
-            shutil.copy(ICON_FILE, out_dir / "pack.png")
-        
-        if README_FILE.exists():
-            shutil.copy(README_FILE, out_dir / "README.md")
-        
-        # 复制许可证文件
-        if Path("LICENSE").exists():
-            shutil.copy("LICENSE", out_dir / "LICENSE")
-        if Path("LICENSE-FONT").exists():
-            shutil.copy("LICENSE-FONT", out_dir / "LICENSE-FONT")
-        
-        zip_name = f"{display_name} Font"
-        shutil.make_archive(
-            str(DIST_DIR / zip_name),
-            'zip',
-            out_dir
-        )
-        print(f"   ✅ 已生成: {zip_name}.zip")
-    
-    shutil.rmtree(individuals_dir, ignore_errors=True)
-    print("✅ 所有独立包已生成")
+      - name: Build resource packs
+        run: |
+          python scripts/build.py
 
-# ===== 主入口 =====
-if __name__ == "__main__":
-    shutil.rmtree(DIST_DIR, ignore_errors=True)  # 完全清空 dist/
-    DIST_DIR.mkdir(exist_ok=True)
-    build_merged()
-    build_individual()
-    print("\n🎉 全部构建完成！")
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.zip
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
+
+
+  # ============================================================
+  # 发布到 Modrinth
+  # 这里才使用 matrix
+  # ============================================================
+  publish-modrinth:
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        pack:
+          - name: British Road Sign Fonts
+            file: British Road Sign Fonts.zip
+            suffix: All
+
+          - name: Motorway Permanent Font
+            file: Motorway Permanent Font.zip
+            suffix: Motorway_Permanent
+
+          - name: Motorway Temporary Font
+            file: Motorway Temporary Font.zip
+            suffix: Motorway_Temporary
+
+          - name: Pavement Font
+            file: Pavement Font.zip
+            suffix: Pavement
+
+          - name: Transport Heavy Font
+            file: Transport Heavy Font.zip
+            suffix: Transport_Heavy
+
+          - name: Transport Medium Font
+            file: Transport Medium Font.zip
+            suffix: Transport_Medium
+
+          - name: VMS Font
+            file: VMS Font.zip
+            suffix: VMS
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Build resource packs
+        run: |
+          python scripts/build.py
+
+      - name: Detect version type
+        id: version
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+
+          if [[ "$VERSION" == *"-alpha"* ]]; then
+            echo "type=alpha" >> "$GITHUB_OUTPUT"
+          elif [[ "$VERSION" == *"-beta"* ]]; then
+            echo "type=beta" >> "$GITHUB_OUTPUT"
+          else
+            echo "type=release" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload ${{ matrix.pack.name }} to Modrinth
+        uses: Kir-Antipov/mc-publish@v3
+        with:
+          modrinth-id: V86rbgab
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          files: |
+            dist/${{ matrix.pack.file }}
+
+          name: ${{ matrix.pack.name }} ${{ github.ref_name }}
+
+          version: ${{ github.ref_name }}_${{ matrix.pack.suffix }}
+
+          version-type: ${{ steps.version.outputs.type }}
+
+          dependencies: |
+            required:rItLmRo4
+
+          loaders: |
+            minecraft
+
+          game-versions: |
+            1.16.5
+            1.17.1
+            1.18.1
+            1.18.2
+            1.19
+            1.19.1
+            1.19.2
+            1.19.3
+            1.19.4
+            1.20
+            1.20.1
+            1.20.2
+            1.20.3
+            1.20.4
+            1.20.5
+            1.20.6
+            1.21
+            1.21.1
+            1.21.2
+            1.21.3
+            1.21.4
+            1.21.5
+            1.21.6
+            1.21.7
+            1.21.8
+            1.21.9
+            1.21.10
+            1.21.11
+            26.1
+            26.1.1
+            26.1.2
