@@ -9,11 +9,6 @@ permissions:
   contents: write
 
 jobs:
-
-  # ============================================================
-  # 构建资源包 + 创建 GitHub Release
-  # 这个 Job 不能使用 matrix，只运行一次
-  # ============================================================
   build:
     runs-on: ubuntu-latest
 
@@ -27,67 +22,8 @@ jobs:
           python-version: "3.x"
 
       - name: Build resource packs
-        run: |
-          python scripts/build.py
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            dist/*.zip
-          generate_release_notes: true
-          prerelease: ${{ contains(github.ref_name, '-') }}
-
-
-  # ============================================================
-  # 发布到 Modrinth
-  # 这里才使用 matrix
-  # ============================================================
-  publish-modrinth:
-    needs: build
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        pack:
-          - name: British Road Sign Fonts
-            file: British Road Sign Fonts.zip
-            suffix: All
-
-          - name: Motorway Permanent Font
-            file: Motorway Permanent Font.zip
-            suffix: Motorway_Permanent
-
-          - name: Motorway Temporary Font
-            file: Motorway Temporary Font.zip
-            suffix: Motorway_Temporary
-
-          - name: Pavement Font
-            file: Pavement Font.zip
-            suffix: Pavement
-
-          - name: Transport Heavy Font
-            file: Transport Heavy Font.zip
-            suffix: Transport_Heavy
-
-          - name: Transport Medium Font
-            file: Transport Medium Font.zip
-            suffix: Transport_Medium
-
-          - name: VMS Font
-            file: VMS Font.zip
-            suffix: VMS
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Build resource packs
+        env:
+          VERSION: ${{ github.ref_name }}
         run: |
           python scripts/build.py
 
@@ -105,18 +41,34 @@ jobs:
             echo "type=release" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Upload ${{ matrix.pack.name }} to Modrinth
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: British Road Sign Fonts ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: |
+            dist/British Road Sign Fonts v${{ github.ref_name }}.zip
+            dist/Motorway Permanent Font v${{ github.ref_name }}.zip
+            dist/Motorway Temporary Font v${{ github.ref_name }}.zip
+            dist/Pavement Font v${{ github.ref_name }}.zip
+            dist/Transport Heavy Font v${{ github.ref_name }}.zip
+            dist/Transport Medium Font v${{ github.ref_name }}.zip
+            dist/VMS Font v${{ github.ref_name }}.zip
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, '-') }}
+
+      - name: Upload to Modrinth
         uses: Kir-Antipov/mc-publish@v3
         with:
           modrinth-id: V86rbgab
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           files: |
-            dist/${{ matrix.pack.file }}
+            dist/British Road Sign Fonts v${{ github.ref_name }}.zip
 
-          name: ${{ matrix.pack.name }} ${{ github.ref_name }}
+          name: British Road Sign Fonts ${{ github.ref_name }}
 
-          version: ${{ github.ref_name }}_${{ matrix.pack.suffix }}
+          version: ${{ github.ref_name }}
 
           version-type: ${{ steps.version.outputs.type }}
 

@@ -12,6 +12,36 @@ DIST_DIR = Path("dist")
 NAMESPACE = "brsf"
 ICON_FILE = Path("src/pack.png")
 
+def get_version():
+    # GitHub Actions
+    version = os.environ.get("VERSION")
+    if version:
+        return version
+
+    version = os.environ.get("GITHUB_REF_NAME")
+    if version:
+        return version
+
+    # 本地 Git tag
+    try:
+        import subprocess
+
+        version = subprocess.check_output(
+            ["git", "describe", "--tags", "--exact-match"],
+            stderr=subprocess.DEVNULL,
+            text=True
+        ).strip()
+
+        if version:
+            return version
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+
+    return "dev"
+
+
+VERSION = get_version()
+
 # ===== 工具函数：将文件夹名转为显示名称 =====
 def folder_to_display_name(folder_name: str) -> str:
     SPECIAL_MAP = {
@@ -64,7 +94,7 @@ def build_merged():
     if Path("LICENSE-FONT").exists():
         shutil.copy("LICENSE-FONT", out_dir / "LICENSE-FONT")
     
-    zip_path = DIST_DIR / "British Road Sign Fonts"
+    zip_path = DIST_DIR / f"British Road Sign Fonts v{VERSION}"
     shutil.make_archive(str(zip_path), 'zip', out_dir)
     
     shutil.rmtree(out_dir, ignore_errors=True)
@@ -136,7 +166,7 @@ def build_individual():
         if Path("LICENSE-FONT").exists():
             shutil.copy("LICENSE-FONT", out_dir / "LICENSE-FONT")
         
-        zip_name = f"{display_name} Font"
+        zip_name = f"{display_name} Font v{VERSION}"
         shutil.make_archive(
             str(DIST_DIR / zip_name),
             'zip',
