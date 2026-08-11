@@ -170,7 +170,7 @@ jobs:
           files: |
             dist/British Road Sign Fonts v${{ github.ref_name }}.zip
 
-          name: British Road Sign Fonts ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           version: ${{ github.ref_name }}
           version-type: ${{ steps.version.outputs.type }}
 
