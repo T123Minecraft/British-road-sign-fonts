@@ -41,7 +41,7 @@ jobs:
             echo "type=release" >> "$GITHUB_OUTPUT"
           fi
 
-        - name: Get previous release
+      - name: Get previous release
         id: previous
         env:
           GH_TOKEN: ${{ github.token }}
