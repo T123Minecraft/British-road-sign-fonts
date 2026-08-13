@@ -1,6 +1,6 @@
 # British Road Sign Fonts
 
-這是由 T123Minecraft 製作的英國道路標識字型資源包，可以在原版使用，也可以配合**迷上城建**或/和**雲北城建**一起使用，不包含 Transport Medium (Greek)、Old Road Sign Font 和 AES Ministry 三種字型。
+這是由T123Minecraft製作（資源包檔案由T123Minecraft打包和編輯）、生成式AI輔助（程式碼主要由ChatGPT和DeepSeek生成）的英國道路標識字型資源包，可以在原版使用，也可以配合**迷上城建**或/和**雲北城建**一起使用，不包含 Transport Medium (Greek)、Old Road Sign Font 和 AES Ministry 三種字型。
 
 這些字型是免費的，下載自：  
 https://www.roads.org.uk/fonts/
