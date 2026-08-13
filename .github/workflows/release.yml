@@ -125,6 +125,7 @@ jobs:
           dependencies: |
             rItLmRo4 | recommends | *
             sbWGUzJs | recommends | *
+            h8ROlzCI | recommends | *
 
           loaders: |
             minecraft
