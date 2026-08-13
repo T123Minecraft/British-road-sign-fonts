@@ -124,6 +124,7 @@ jobs:
 
           dependencies: |
             rItLmRo4 | depends | *
+            sbWGUzJs | recommends | *
 
           loaders: |
             minecraft
@@ -175,7 +176,9 @@ jobs:
           version-type: ${{ steps.version.outputs.type }}
 
           dependencies: |
-            required:rItLmRo4
+            required:583071
+            required:1610855
+            optional:1617806
 
           loaders: |
             minecraft
