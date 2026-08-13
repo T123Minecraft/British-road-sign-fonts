@@ -123,7 +123,7 @@ jobs:
           version-type: ${{ steps.version.outputs.type }}
 
           dependencies: |
-            rItLmRo4 | depends | *
+            rItLmRo4 | recommends | *
             sbWGUzJs | recommends | *
 
           loaders: |
@@ -174,11 +174,6 @@ jobs:
           name: ${{ github.ref_name }}
           version: ${{ github.ref_name }}
           version-type: ${{ steps.version.outputs.type }}
-
-          dependencies: |
-            required:583071
-            required:1610855
-            optional:1617806
 
           loaders: |
             minecraft
